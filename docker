@@ -1,0 +1,9 @@
+1. Install Docker on Windows
+step 2 - check docker version 
+  docker -v
+docker images
+docker ps
+Step 3 - open chrome 
+docker hub(sign in)
+inside this
+  search python and then select  pull and paste in cmd
