@@ -8,6 +8,7 @@ Step 4: Create Any Application
 Create a folder:
 mkdir myapp
 cd myapp
+notepad index.html
 <!DOCTYPE html>
 <html>
 <head>
