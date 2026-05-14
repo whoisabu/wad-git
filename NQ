@@ -75,3 +75,5 @@ int main() {
 
     return 0;
 }
+g++ knapsack.cpp
+./a.out
