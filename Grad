@@ -1,0 +1,123 @@
+import os
+print("Current Working Directory:", os.getcwd())
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier, plot_tree
+from sklearn.metrics import accuracy_score, precision_score, recall_score
+from sklearn.metrics import confusion_matrix, classification_report
+
+# ------------------------------------------------------------
+
+# Step 2: Load Dataset
+
+df = pd.read_csv("Graduate Admissions.csv")
+
+# Remove extra spaces from column names
+df.columns = df.columns.str.strip()
+
+# Display first 5 rows
+print("\nFirst 5 Rows:")
+print(df.head())
+
+# ------------------------------------------------------------
+
+# Step 3: Dataset Information
+
+print("\nDataset Information:")
+print(df.info())
+
+print("\nMissing Values:")
+print(df.isnull().sum())
+
+# ------------------------------------------------------------
+
+# Step 4: Data Preprocessing
+
+# Convert Chance of Admit into Classification Labels
+# >= 0.75 → Admitted (1)
+# < 0.75 → Not Admitted (0)
+
+df['Admit'] = np.where(df['Chance of Admit'] >= 0.75, 1, 0)
+
+# ------------------------------------------------------------
+
+# Step 5: Define Features and Target
+
+X = df[['GRE Score', 'TOEFL Score', 'CGPA']]
+
+y = df['Admit']
+
+# ------------------------------------------------------------
+
+# Step 6: Train-Test Split
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+# ------------------------------------------------------------
+
+# Step 7: Apply Decision Tree Classifier
+
+model = DecisionTreeClassifier(random_state=42)
+
+model.fit(X_train, y_train)
+
+# ------------------------------------------------------------
+
+# Step 8: Prediction
+
+y_pred = model.predict(X_test)
+
+print("\nPredicted Values:")
+print(y_pred)
+
+# ------------------------------------------------------------
+
+# Step 9: Model Evaluation
+
+accuracy = accuracy_score(y_test, y_pred)
+
+precision = precision_score(y_test, y_pred)
+
+recall = recall_score(y_test, y_pred)
+
+print("\nModel Performance:")
+print("Accuracy :", accuracy)
+print("Precision:", precision)
+print("Recall   :", recall)
+
+# ------------------------------------------------------------
+
+# Step 10: Confusion Matrix
+
+print("\nConfusion Matrix:")
+print(confusion_matrix(y_test, y_pred))
+
+# ------------------------------------------------------------
+
+# Step 11: Classification Report
+
+print("\nClassification Report:")
+print(classification_report(y_test, y_pred))
+
+# ------------------------------------------------------------
+
+# Step 12: Decision Tree Visualization
+
+plt.figure(figsize=(15,10))
+
+plot_tree(
+    model,
+    feature_names=X.columns,
+    class_names=['Not Admitted', 'Admitted'],
+    filled=True
+)
+
+plt.title("Decision Tree Classifier")
+
+plt.show()
